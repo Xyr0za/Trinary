@@ -5,12 +5,13 @@ class Parser():
     def __init__(self):
         self.pg = ParserGenerator(
             # A list of all token names accepted by the parser.
-            ['NUMBER',
+            [
+             'NUMBER', 'COMMENT',
              'PRINT',
              'OPEN_PAREN', 'CLOSE_PAREN',
              'SEMI_COLON',
              'SUM', 'SUB', 'MUL', 'DIV', 'MOD', 'EXP',
-             'ASSIGN', 'IDENTIFIER', 'BAR'],
+             'ASSIGN', 'IDENTIFIER', 'BAR', 'DOT','COM', 'QSOL', 'SIN', 'COS'],
             precedence=[
                 ('left', ['SUM', 'SUB']),
                 ('left', ['MUL', 'DIV', 'MOD']),
@@ -20,6 +21,11 @@ class Parser():
         self.symbolTable = {}
 
     def parse(self):
+
+        @self.pg.production('program : COMMENT')
+        def comment_rule(p):
+            pass
+
         @self.pg.production('program : PRINT OPEN_PAREN expression CLOSE_PAREN SEMI_COLON')
         def print_program(p):
             return Print(p[2])
@@ -29,7 +35,6 @@ class Parser():
             var_name = p[1].getstr()
             value = p[3]
             return Assignment(var_name, value)
-
 
         @self.pg.production('expression : expression SUM expression')
         @self.pg.production('expression : expression SUB expression')
@@ -61,9 +66,29 @@ class Parser():
             var_name = p[0].getstr()
             return Variable(var_name)
 
+        @self.pg.production('expression : SIN OPEN_PAREN expression CLOSE_PAREN')
+        def sin_expression(p):
+            return Sin(p[2])
+
+        @self.pg.production('expression : COS OPEN_PAREN expression CLOSE_PAREN')
+        def sin_expression(p):
+            return Cos(p[2])
+
         @self.pg.production('expression : OPEN_PAREN expression CLOSE_PAREN')
         def paren_expression(p):
             return p[1]
+
+        @self.pg.production('expression : QSOL OPEN_PAREN expression COM expression COM expression CLOSE_PAREN')
+        def functionQsolve(p):
+            return QSolve(p[2], p[4], p[6])
+
+        @self.pg.production('expression : NUMBER DOT NUMBER')
+        def float(p):
+            return Float(p[0], p[2])
+
+        @self.pg.production('expression : SUB expression')
+        def flip_sign(p):
+            return Negate(p[1])
 
         @self.pg.production('expression : NUMBER')
         def number(p):
