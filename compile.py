@@ -4,14 +4,14 @@ from print_color import print
 from lexer import *
 from parser import *
 
-version: str = "1.1.1"
+version: str = "1.1.2"
 
 print(
 f"""
 ========================================
-#                                      #
-#{f'Trinary V{version}'.center(38)}#
-#                                      #
+=                                      =
+={f'Trinary V{version}'.center(38)}=
+=                                      =
 ========================================\n
 """, color = "v"
 )
@@ -33,11 +33,9 @@ parser = pg.get_parser()
 
 context = {}
 
-for instrucion in lines:
-    if instrucion == '':
+for instruction in lines:
+    if instruction == '' or instruction[0:2] == "//":
         continue
 
-    tokens = lexer.lex(instrucion)
+    tokens = lexer.lex(instruction)
     parser.parse(tokens).eval(context)
-
-print("Process ending\n", tag="SUCCESS", tag_color="green", color="white")
