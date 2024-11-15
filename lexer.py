@@ -5,8 +5,15 @@ class Lexer():
         self.lexer = LexerGenerator()
 
     def _add_tokens(self):
+
+        # Add Comments
+        self.lexer.add('COMMENT', r'//[^\n]*')
+        self.lexer.ignore(r'//[^\n]*')
+
         # Print
         self.lexer.add('PRINT', r'print')
+        self.lexer.add('QSOL', r'qsolve')
+
 
         # Parenthesis
         self.lexer.add('OPEN_PAREN', r'\(')
@@ -22,6 +29,12 @@ class Lexer():
         self.lexer.add('DIV', r'\/')
         self.lexer.add('MOD', r'\%')
         self.lexer.add('EXP', r'\^')
+        self.lexer.add('SIN', r'sin')
+        self.lexer.add('COS', r'cos')
+
+        # Punc
+        self.lexer.add('DOT', r'\.')
+        self.lexer.add('COM', r'\,')
 
         # Number
         self.lexer.add('NUMBER', r'\d+')
@@ -35,6 +48,7 @@ class Lexer():
 
         # Ignore spaces
         self.lexer.ignore('\s+')
+
 
     def get_lexer(self):
         self._add_tokens()
