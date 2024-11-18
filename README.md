@@ -16,7 +16,7 @@ print(x / y);
 print(x % y);
 
 // As well as parenthetic priority
-print(2 * (4+1) -8);  // Remember BIDMAS 
+print(2 * (4+1) -8);  
 
 // Furthermore, SIN and COS are now inbuilt functions, in radians.
 
@@ -26,7 +26,5 @@ print(2 * (4+1) -8);  // Remember BIDMAS
 |c45 = cos(pi / 4);
 
 print(s45 ^ 2 + c45^2); // sin(t)^2 + cos(t)^2 = 1
-
-// And the language has a function dedicated to the solving of quadratics
 
 print(qsolve(1, 1, -1));
